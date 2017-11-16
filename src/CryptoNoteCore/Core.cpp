@@ -1868,9 +1868,9 @@ void Core::fillBlockTemplate(BlockTemplate& block, size_t medianSize, size_t max
     }
 
     if (!spentInputsChecker.haveSpentInputs(transaction.getTransaction())) {
-      block.transactionHashes.emplace_back(transaction.getTransactionHash());
-      transactionsSize += transactionBlobSize;
-      logger(Logging::TRACE) << "Fusion transaction " << transaction.getTransactionHash() << " included to block template";
+      //block.transactionHashes.emplace_back(transaction.getTransactionHash());
+      //transactionsSize += transactionBlobSize;
+      logger(Logging::TRACE) << "Fusion transaction " << transaction.getTransactionHash() << " EXCLUDED from block template";
     }
   }
 
