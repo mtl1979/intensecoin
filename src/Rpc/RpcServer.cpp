@@ -465,7 +465,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
 	Hash hash;
 
 	try {
-		uint32_t height = boost::lexical_cast<uint32_t>(req.hash);
+		uint32_t height = req.hash.empty() ? m_core.getTopBlockIndex() :  boost::lexical_cast<uint32_t>(req.hash);
 		hash = m_core.getBlockHashByIndex(height);
 	}
 	catch (boost::bad_lexical_cast &) {
@@ -494,6 +494,8 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
 	res.block.height = boost::get<BaseInput>(blk.baseTransaction.inputs.front()).blockIndex;
 	fill_block_header_response(blk, false, res.block.height, hash, block_header);
 
+	uint64_t addDevCoins = 14992032108270070;
+
 	res.block.major_version = block_header.major_version;
 	res.block.minor_version = block_header.minor_version;
 	res.block.timestamp = block_header.timestamp;
@@ -503,7 +505,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
 	res.block.depth = m_core.getTopBlockIndex() - res.block.height;
 	res.block.difficulty = m_core.getBlockDifficulty(res.block.height);
 	res.block.transactionsCumulativeSize = blkDetails.transactionsCumulativeSize;
-	res.block.alreadyGeneratedCoins = std::to_string(blkDetails.alreadyGeneratedCoins);
+	res.block.alreadyGeneratedCoins = std::to_string(blkDetails.alreadyGeneratedCoins + addDevCoins);
 	res.block.alreadyGeneratedTransactions = blkDetails.alreadyGeneratedTransactions;
 	res.block.reward = block_header.reward;
 	res.block.sizeMedian = blkDetails.sizeMedian;
