@@ -2,7 +2,10 @@
 build
 .vs
 CMakeFiles
+cmake_install.cmake
+*_autogen
 *.dir
+*.sln
 *.vcxproj
 *.filters
 /tags
