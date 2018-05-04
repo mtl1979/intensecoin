@@ -369,7 +369,7 @@ void BlockchainCache::splitMultiSignatureOutputsGlobalIndexes(BlockchainCache& n
 
   splitGlobalIndexes(multisignatureStorage, newCache.multisignatureStorage, splitBlockIndex, lowerBoundFunction);
 
-  // move spent mutisig by block
+  // move spent multisig by block
   auto it = spentMultisigOutputsByBlock.lower_bound(splitBlockIndex);
   std::move(it, spentMultisigOutputsByBlock.end(),
             std::inserter(newCache.spentMultisigOutputsByBlock, newCache.spentMultisigOutputsByBlock.end()));

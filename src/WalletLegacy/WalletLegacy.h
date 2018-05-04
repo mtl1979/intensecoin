@@ -84,6 +84,7 @@ public:
   virtual TransactionId sendTransaction(const std::vector<WalletLegacyTransfer>& transfers, uint64_t fee, const std::string& extra = "", uint64_t mixIn = 0, uint64_t unlockTimestamp = 0) override;
   virtual std::error_code cancelTransaction(size_t transactionId) override;
 
+  void syncAll(bool syncWalletFromZero) override;
   virtual void getAccountKeys(AccountKeys& keys) override;
 
 private:
@@ -125,6 +126,7 @@ private:
   INode& m_node;
   Logging::ConsoleLogger m_consoleLogger;
   bool m_isStopping;
+  bool m_syncAll;
 
   std::atomic<uint64_t> m_lastNotifiedActualBalance;
   std::atomic<uint64_t> m_lastNotifiedPendingBalance;

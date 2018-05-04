@@ -110,6 +110,7 @@ WalletLegacy::WalletLegacy(const CryptoNote::Currency& currency, INode& node) :
   m_node(node),
   m_consoleLogger(Logging::ERROR),
   m_isStopping(false),
+  m_syncAll(0),
   m_lastNotifiedActualBalance(0),
   m_lastNotifiedPendingBalance(0),
   m_blockchainSync(node, m_consoleLogger, currency.genesisBlockHash()),
@@ -203,6 +204,9 @@ void WalletLegacy::initSync() {
   sub.transactionSpendableAge = 1;
   sub.syncStart.height = 0;
   sub.syncStart.timestamp = m_account.get_createtime() - ACCOUN_CREATE_TIME_ACCURACY;
+  if (m_syncAll == 1)
+    sub.syncStart.timestamp = 0;
+  std::cout << "Sync from timestamp: " << sub.syncStart.timestamp << std::endl;
   
   auto& subObject = m_transfersSync.addSubscription(sub);
   m_transferDetails = &subObject.getContainer();
@@ -593,6 +597,10 @@ void WalletLegacy::notifyIfBalanceChanged() {
     m_observerManager.notify(&IWalletLegacyObserver::pendingBalanceUpdated, pending);
   }
 
+}
+
+void WalletLegacy::syncAll(bool syncWalletFromZero) {
+  m_syncAll = syncWalletFromZero;
 }
 
 void WalletLegacy::getAccountKeys(AccountKeys& keys) {
